@@ -1,0 +1,9 @@
+{
+    "name": "phlix-plugin-jade-theme",
+    "version": "1.0.0",
+    "phlix_min_server_version": "0.44.0",
+    "type": "ui-theme",
+    "entry": "Phlix\\Jade\\JadePlugin",
+    "events": [],
+    "signature": null
+}

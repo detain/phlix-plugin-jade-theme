@@ -1,0 +1,15 @@
+parameters:
+    level: 9
+    scanDirectories:
+        - dev-stubs
+    paths:
+        - src
+    excludePaths:
+        - vendor
+        - tests
+        - dev-stubs
+    ignoreErrors:
+        # Allow dynamic return types where interface requires it
+        - '#Call to an undefined method.*::subscribeEvent\(\)#'
+        - '#Method .* should return .* but returns mixed#'
+    reportUnmatchedIgnoredErrors: false
