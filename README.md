@@ -56,7 +56,7 @@ composer require detain/phlix-plugin-jade-theme
 
 ## Requirements
 
-- PHP 8.2+
+- PHP 8.3+
 - Phlix 0.44.0+
 
 ## License

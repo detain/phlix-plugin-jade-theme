@@ -1,25 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ruleset name="Phlix Jade Plugin Coding Standard">
-    <description>Coding standard rules for Phlix Jade theme plugin</description>
-
-    <arg name="tab-width" value="4"/>
-    <arg name="encoding" value="UTF-8"/>
-    <arg name="colors"/>
-    <arg name="basepath" value="."/>
-
+<ruleset name="Phlix Theme Plugin">
+    <description>PSR-12 coding standard</description>
     <file>src</file>
-
-    <!-- PSR-12 -->
+    <file>tests</file>
+    <file>dev-stubs</file>
+    <exclude-pattern>vendor/</exclude-pattern>
     <rule ref="PSR12"/>
-
-    <!-- Additional rules -->
-    <rule ref="Generic.Classes.OpeningBraceBraceOnNewLine"/>
-    <rule ref="Squiz.Functions.MultiLineFunctionDeclaration"/>
-
-    <!-- Exclude generated directories -->
-    <exclude-paths>
-        <directory>vendor</directory>
-        <directory>dev-stubs</directory>
-        <directory>.github</directory>
-    </exclude-paths>
 </ruleset>
