@@ -1,11 +1,13 @@
 {
     "name": "detain/phlix-plugin-jade-theme",
     "description": "Jade theme plugin for Phlix - a deep emerald palette with luminous jade accent tones",
-    "type": "project",
+    "type": "phlix-plugin",
     "homepage": "https://github.com/detain/phlix-plugin-jade-theme",
     "license": "MIT",
     "require": {
-        "php": "^8.2"
+        "php": ">=8.3",
+        "detain/phlix-shared": "^0.21",
+        "psr/container": "^1.1 || ^2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0",
@@ -22,6 +24,12 @@
             "Phlix\\Jade\\Tests\\": "tests/"
         }
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/detain/phlix-shared"
+        }
+    ],
     "scripts": {
         "test": "phpunit",
         "phpstan": "phpstan analyse",
