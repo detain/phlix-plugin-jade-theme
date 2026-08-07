@@ -64,7 +64,7 @@ final class JadePluginTest extends TestCase
             $this->assertIsString($tokenValue, "Token value must be string");
 
             // Token names must start with '--'
-            $this->assertStringStartsWith('--', $tokenName, "Token name must start with '--'");
+            $this->assertStringStartsWith('--', $tokenName, "Token name must start with '--");
 
             // Token values must NOT contain var() references (self-referential)
             $this->assertStringNotContainsString('var(', $tokenValue, "Token value must not contain var() references");
