@@ -7,7 +7,6 @@ parameters:
     excludePaths:
         - vendor
         - tests
-        - dev-stubs
     ignoreErrors:
         # Allow dynamic return types where interface requires it
         - '#Call to an undefined method.*::subscribeEvent\(\)#'
