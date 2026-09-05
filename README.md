@@ -59,6 +59,29 @@ composer require detain/phlix-plugin-jade-theme
 - PHP 8.3+
 - Phlix 0.44.0+
 
+## Development
+
+Install dependencies:
+
+```bash
+composer install
+```
+
+Run the test suite (`phpunit.xml`, bootstrapped by `tests/bootstrap.php`):
+
+```bash
+composer test
+```
+
+Run static analysis (`phpstan.neon`, level 9) and coding standards (`phpcs.xml`, PSR-12):
+
+```bash
+composer phpstan
+composer phpcs
+```
+
+`tests/bootstrap.php` loads `dev-stubs/LifecycleInterface.php` and `dev-stubs/ThemeSourceInterface.php` only when the real host contracts are absent, so the suite runs outside a Phlix server checkout. `.github/workflows/test.yml` runs the same three checks on PHP 8.3 and 8.4.
+
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
