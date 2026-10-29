@@ -104,7 +104,7 @@ final class JadePlugin implements LifecycleInterface, ThemeSourceInterface
                     '--text' => '#e8f5ec',
                     '--text-muted' => '#9ab8a8',
                     '--text-subtle' => '#708a7c',
-                    '--text-faint' => '#3a4a40',
+                    '--text-faint' => '#6a8473',
                     '--text-on-accent' => '#050a07',
 
                     // Borders.

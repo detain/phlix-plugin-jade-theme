@@ -24,6 +24,9 @@ use RuntimeException;
  *  - `--text-subtle` carries real small-size text: AuthField form labels, the
  *    password-toggle glyph, and generic Input/Combobox placeholders — body
  *    text tier, so it must reach AA (>= 4.5:1) on its painted grounds.
+ *  - `--text-faint` is bound by the ui as the AuthField ::placeholder color —
+ *    placeholder text is NOT a disabled control, so it is AA-bound (>= 4.5:1)
+ *    on the grounds it paints, while staying strictly below --text-subtle.
  *  - `--accent-ring` is a box-shadow focus indicator (the ui has no outline
  *    fallback), so the COMPOSITED result over each ground is the visible
  *    boundary and must reach WCAG 1.4.11 (>= 3:1) against that ground.
@@ -46,14 +49,16 @@ final class TokenContrastTest extends TestCase
     private const AA_UI_COMPONENT_RATIO = 3.0;
 
     /**
-     * Alpha the SPA paints `--surface` at for an input field.
+     * Alpha the SPA paints `--surface` at for an auth input field.
      *
-     * Input/Combobox placeholders do not sit on the opaque surface token: the
+     * Input placeholders are not painted on the opaque surface token: the
      * field is a translucent fill over the page background, so the effective
-     * ground is `--surface` composited onto `--bg` at this alpha. Derived from
-     * the vendored SPA (`public_html/assets/app`, Input.vue `--phlix-input-bg`)
-     * rather than assumed — the review measured the placeholder pair on the
-     * composite for exactly this reason.
+     * ground is `--surface` composited onto `--bg` at this alpha. The value
+     * is read from the shipped ui source (phlix-ui
+     * src/components/auth/AuthField.vue: `.authfield__input { background:
+     * color-mix(in srgb, var(--surface) 80%, transparent) }`), not assumed —
+     * the review measured the placeholder pair on the composite ground for
+     * exactly this reason.
      */
     private const INPUT_SURFACE_ALPHA = 0.8;
 
@@ -192,6 +197,50 @@ final class TokenContrastTest extends TestCase
                 )
             );
         }
+    }
+
+    #[Test]
+    public function testTextFaintMeetsAaOnItsGradedGrounds(): void
+    {
+        $tokens = $this->tokens();
+        $ink = $tokens['--text-faint'];
+        // webux M3 measured faint at 2.12/1.99/2.02 on exactly these grounds:
+        // the auth page bg, the card surface, and the translucent login input
+        // where AuthField binds it as ::placeholder. The topmost elevations
+        // carry no faint text in the shipped flows, and the disabled-control
+        // reading of this tier is WCAG 1.4.3-exempt outright.
+        $graded = [
+            '--bg' => $tokens['--bg'],
+            '--surface' => $tokens['--surface'],
+            'input composite' => $this->composite(
+                $tokens['--surface'],
+                self::INPUT_SURFACE_ALPHA,
+                $tokens['--bg']
+            ),
+        ];
+
+        foreach ($graded as $name => $ground) {
+            $ratio = $this->contrastRatio($ink, $ground);
+            $this->assertGreaterThanOrEqual(
+                self::AA_TEXT_RATIO,
+                $ratio,
+                sprintf(
+                    '--text-faint %s on %s (%s) is %.2f:1 — below the 4.5:1 AA floor',
+                    $ink,
+                    $name,
+                    $ground,
+                    $ratio
+                )
+            );
+        }
+
+        // Ramp law: faint must stay strictly darker than subtle or the two
+        // tiers collapse into one (the cure must lift, not flatten).
+        $this->assertLessThan(
+            $this->relativeLuminance($this->parseHex($tokens['--text-subtle'])),
+            $this->relativeLuminance($this->parseHex($ink)),
+            '--text-faint must stay strictly darker than --text-subtle'
+        );
     }
 
     /**
