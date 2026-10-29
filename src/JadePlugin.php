@@ -89,7 +89,7 @@ final class JadePlugin implements LifecycleInterface, ThemeSourceInterface
                     '--accent-hover' => '#6ee89a',
                     '--accent-active' => '#3da85e',
                     '--accent-soft' => 'rgba(80, 200, 120, 0.15)',
-                    '--accent-ring' => 'rgba(80, 200, 120, 0.45)',
+                    '--accent-ring' => 'rgba(110, 232, 154, 0.55)',
                     '--accent-text' => '#e8fff0',
 
                     // Background + elevation stack.

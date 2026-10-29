@@ -36,7 +36,7 @@ A deep emerald UI theme for Phlix with luminous jade accent tones.
 | **Accent Hover** | `#6ee89a` | Hover state accent |
 | **Accent Active** | `#3da85e` | Active/pressed state |
 | **Accent Soft** | `rgba(80, 200, 120, 0.15)` | Soft background fills |
-| **Accent Ring** | `rgba(80, 200, 120, 0.45)` | Focus ring color |
+| **Accent Ring** | `rgba(110, 232, 154, 0.55)` | Focus ring color (composites ≥3:1 on every ground) |
 | **Accent Text** | `#e8fff0` | Text on accent backgrounds |
 | **Text on Accent** | `#050a07` | Accent background default text |
 

@@ -24,6 +24,9 @@ use RuntimeException;
  *  - `--text-subtle` carries real small-size text: AuthField form labels, the
  *    password-toggle glyph, and generic Input/Combobox placeholders — body
  *    text tier, so it must reach AA (>= 4.5:1) on its painted grounds.
+ *  - `--accent-ring` is a box-shadow focus indicator (the ui has no outline
+ *    fallback), so the COMPOSITED result over each ground is the visible
+ *    boundary and must reach WCAG 1.4.11 (>= 3:1) against that ground.
  *
  * Values are parsed from providedThemes() so the law follows the palette;
  * it is not a duplicated constant table. The WCAG 1.4.3 math is recomputed
@@ -38,6 +41,9 @@ final class TokenContrastTest extends TestCase
 {
     /** WCAG 1.4.3 AA floor for normal-size text. */
     private const AA_TEXT_RATIO = 4.5;
+
+    /** WCAG 1.4.11 floor for the focus-indicator boundary against its ground. */
+    private const AA_UI_COMPONENT_RATIO = 3.0;
 
     /**
      * Alpha the SPA paints `--surface` at for an input field.
@@ -163,6 +169,31 @@ final class TokenContrastTest extends TestCase
         );
     }
 
+    #[Test]
+    public function testAccentRingCompositesAboveTheFocusIndicatorFloorOnEveryGround(): void
+    {
+        $tokens = $this->tokens();
+        [$rgb, $alpha] = $this->parseRgba($tokens['--accent-ring']);
+
+        foreach ($this->grounds() as $name => $ground) {
+            $hex = sprintf('#%02x%02x%02x', $rgb[0], $rgb[1], $rgb[2]);
+            $composited = $this->composite($hex, $alpha, $ground);
+            $ratio = $this->contrastRatio($composited, $ground);
+            $this->assertGreaterThanOrEqual(
+                self::AA_UI_COMPONENT_RATIO,
+                $ratio,
+                sprintf(
+                    '--accent-ring %s composited on %s (%s) is %.2f:1 — below the 3:1 WCAG 1.4.11 '
+                    . 'floor for the focus indicator, the ui\'s primary keyboard affordance',
+                    $tokens['--accent-ring'],
+                    $name,
+                    $ground,
+                    $ratio
+                )
+            );
+        }
+    }
+
     /**
      * Alpha-composite a hex over a hex, the way the browser would.
      */
@@ -204,6 +235,19 @@ final class TokenContrastTest extends TestCase
         $darker = min($luminanceA, $luminanceB);
 
         return ($brighter + 0.05) / ($darker + 0.05);
+    }
+
+    /**
+     * @return array{array{int, int, int}, float}  [rgb, alpha]
+     */
+    private function parseRgba(string $value): array
+    {
+        $matches = [];
+        if (preg_match('/^rgba\(\s*(\d+),\s*(\d+),\s*(\d+),\s*(0?\.\d+|1(?:\.0+)?)\s*\)$/', $value, $matches) !== 1) {
+            throw new RuntimeException("Ring law expects literal rgba(r, g, b, a), got '$value'");
+        }
+
+        return [[(int) $matches[1], (int) $matches[2], (int) $matches[3]], (float) $matches[4]];
     }
 
     /**
