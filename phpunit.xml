@@ -20,4 +20,20 @@
             <directory suffix=".php">src</directory>
         </include>
     </source>
+
+    <!-- Coverage telemetry contract (review theme-jade__srphp MAJOR-1):
+         .github/workflows/test.yml documents "phpunit.xml writes a cobertura
+         report to ./coverage.xml" and uploads that file to Codacy. The S440
+         port batch dropped this block from every ported phpunit.xml while
+         shipping the byte-identical workflow that claims it, so the report was
+         never produced and the upload silently no-oped under
+         continue-on-error. Restoring the reference (sample-theme) shape makes
+         the claim true again. Without a coverage driver (pcov/xdebug) phpunit
+         simply skips the report, so local runs stay green driverless; the CI
+         job provisions pcov. -->
+    <coverage>
+        <report>
+            <cobertura outputFile="coverage.xml"/>
+        </report>
+    </coverage>
 </phpunit>

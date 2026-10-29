@@ -17,6 +17,8 @@ Thumbs.db
 
 # Test coverage
 /coverage/
+/coverage.xml
+/coverage-report/
 .phpunit.result.cache
 
 # Composer
