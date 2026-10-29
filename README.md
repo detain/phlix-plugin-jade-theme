@@ -15,7 +15,7 @@ A deep emerald UI theme for Phlix with luminous jade accent tones.
 | **Surface 3** | `#192a24` | Highest elevation surfaces |
 | **Text** | `#e8f5ec` | Primary text color |
 | **Text Muted** | `#9ab8a8` | Secondary/muted text |
-| **Text Subtle** | `#62786e` | Tertiary/subtle text |
+| **Text Subtle** | `#708a7c` | Tertiary/subtle text (AA ≥4.5:1 on bg/surface/elevated) |
 | **Text Faint** | `#3a4a40` | Disabled/placeholder text |
 | **Border** | `#1e2e28` | Default border color |
 | **Border Subtle** | `#141e1a` | Subtle divider lines |
