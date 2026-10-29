@@ -42,9 +42,36 @@ A deep emerald UI theme for Phlix with luminous jade accent tones.
 
 ## Installation
 
+A theme plugin only registers **while enabled** — a fresh install lands
+*disabled*, so plan on both steps. There are two supported routes:
+
+**Admin UI** — *Admin → Plugins* (`/app/admin/plugins`), find **Jade Theme**,
+press **Install**, then flip its switch to enable it.
+
+**CLI** — from the server root:
+
 ```bash
-composer require detain/phlix-plugin-jade-theme
+php bin/phlix plugin:install https://github.com/detain/phlix-plugin-jade-theme
+php bin/phlix plugin:enable  phlix-plugin-jade-theme
 ```
+
+Pass the **repository URL** to `plugin:install`: the server resolves it through
+the plugin catalog (`plugins.json`), which pins the exact commit and tarball
+sha256 it verifies before extracting. A bare plugin name is not something the
+installer can download.
+
+Once enabled, *Settings → Appearance* shows the Jade swatch next to the
+built-ins; picking it applies live. If the swatch is missing, the plugin is
+installed but not enabled — `php bin/phlix plugin:list` shows which state
+it's in.
+
+A note on the wrong route: `composer require detain/phlix-plugin-jade-theme`
+does **not** install the theme. That is the library-dependency path, and the
+server loads plugins from its own store (`var/plugins/`, populated by
+`PluginLoader`), never from an application's `vendor/` tree. This repo's
+`composer.json` exists so the catalog tooling and this suite can resolve the
+package — running `composer install` inside a checkout is for development of
+the theme itself (see *Development* below).
 
 ## Theme Details
 
