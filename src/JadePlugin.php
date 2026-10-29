@@ -84,7 +84,11 @@ final class JadePlugin implements LifecycleInterface, ThemeSourceInterface
                 'dark' => true,
                 'extends' => 'midnight',
                 'tokens' => [
-                    // Accent ramp — jade green tones.
+                    // Accent ramp — jade green tones. NOTE the two ink roles
+                    // are opposites: --accent-text is the accent as FOREGROUND
+                    // text on the surface stack (light ink, AA-pinned by
+                    // tests/TokenContrastTest.php); --text-on-accent is the
+                    // dark ink drawn ON --accent fills. Not interchangeable.
                     '--accent' => '#50c878',
                     '--accent-hover' => '#6ee89a',
                     '--accent-active' => '#3da85e',

@@ -37,8 +37,8 @@ A deep emerald UI theme for Phlix with luminous jade accent tones.
 | **Accent Active** | `#3da85e` | Active/pressed state |
 | **Accent Soft** | `rgba(80, 200, 120, 0.15)` | Soft background fills |
 | **Accent Ring** | `rgba(110, 232, 154, 0.55)` | Focus ring color (composites ≥3:1 on every ground) |
-| **Accent Text** | `#e8fff0` | Text on accent backgrounds |
-| **Text on Accent** | `#050a07` | Accent background default text |
+| **Accent Text** | `#e8fff0` | Accent-colored foreground text and icons on bg/surfaces (the accent as ink) |
+| **Text on Accent** | `#050a07` | Dark ink drawn on accent fills (buttons, badges) |
 
 ## Installation
 
