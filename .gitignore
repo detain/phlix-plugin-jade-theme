@@ -22,7 +22,12 @@ Thumbs.db
 .phpunit.result.cache
 
 # Composer
-composer.lock
+# NOTE: composer.lock is deliberately NOT ignored here — this repo commits
+# it by S440 law (178603f; tests/SecurityAuditCheckTest.php's
+# testTheCommittedLockExists asserts it, and the whole audit gate is built
+# on the pinned lock). The reference skeleton's ignore line is the known
+# family contradiction: it would make future legitimate lock updates
+# unstageable without -f. Kept out on purpose, not an oversight.
 
 # Git (rarely needed in plugin, but standard)
 # .git/

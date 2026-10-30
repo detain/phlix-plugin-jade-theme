@@ -30,6 +30,16 @@
             "url": "https://github.com/detain/phlix-shared"
         }
     ],
+    "_comment": [
+        "Why the repositories block exists (W-min133 item 07, family-drift",
+        "question): detain/phlix-shared is developed alongside these plugins,",
+        "and the vcs entry lets `composer update` resolve shared tags straight",
+        "from GitHub instead of depending on a Packagist mirror's freshness.",
+        "`composer install` is lock-driven either way, so CI is unaffected.",
+        "Whether the nine sibling themes keep or shed the block is a family",
+        "call (routed to the family sweep); removing it here unilaterally",
+        "would just create the drift this item complains about, mirrored."
+    ],
     "scripts": {
         "test": "phpunit",
         "phpstan": "phpstan analyse",
