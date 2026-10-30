@@ -9,6 +9,9 @@
  * so the host contract resolves during CI; it also supports
  * development workflows that don't have the full Phlix monorepo
  * installed.
+ *
+ * @copyright 2026 Joe Huss <detain@interserver.net>
+ * @license   MIT
  */
 
 declare(strict_types=1);
