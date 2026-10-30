@@ -30,6 +30,12 @@ use RuntimeException;
  *  - `--accent-ring` is a box-shadow focus indicator (the ui has no outline
  *    fallback), so the COMPOSITED result over each ground is the visible
  *    boundary and must reach WCAG 1.4.11 (>= 3:1) against that ground.
+ *  - `--success` is the semantic status ink the theme overrides from the
+ *    inherited midnight #61c073 (webux N1: 1.06:1 against jade's green
+ *    `--accent` — success badges read as accent chips). The override must
+ *    stay distinguishable from `--accent` (pair contrast and hue floors
+ *    below) AND reach AA (>= 4.5:1) on every ground it paints, including
+ *    its own `--success-bg` chip.
  *
  * Values are parsed from providedThemes() so the law follows the palette;
  * it is not a duplicated constant table. The WCAG 1.4.3 math is recomputed
@@ -47,6 +53,26 @@ final class TokenContrastTest extends TestCase
 
     /** WCAG 1.4.11 floor for the focus-indicator boundary against its ground. */
     private const AA_UI_COMPONENT_RATIO = 3.0;
+
+    /**
+     * Minimum WCAG contrast between `--success` and `--accent`.
+     *
+     * The webux N1 collision measured 1.062:1 for the inherited midnight
+     * #61c073 pair (#61c073 vs #50c878); the cure #2fb98e measures 1.168:1.
+     * A 1.15:1 floor rejects any value that collapses back onto the accent
+     * ramp while staying below the cured value, so the law has teeth.
+     */
+    private const SUCCESS_ACCENT_MIN_RATIO = 1.15;
+
+    /**
+     * Minimum HSL hue separation (degrees) between `--success` and `--accent`.
+     *
+     * Contrast alone cannot tell two lights of the same hue apart, and the
+     * N1 collision was a near-identical hue (Δ8.6°). The cured pair sits at
+     * Δ21.3° toward teal; a 15° floor keeps the status role visually
+     * distinct from the brand accent.
+     */
+    private const SUCCESS_ACCENT_MIN_HUE_DEG = 15.0;
 
     /**
      * Alpha the SPA paints `--surface` at for an auth input field.
@@ -243,6 +269,79 @@ final class TokenContrastTest extends TestCase
         );
     }
 
+    #[Test]
+    public function testSuccessStaysDistinguishableFromTheAccentAndMeetsAaOnItsGrounds(): void
+    {
+        $tokens = $this->tokens();
+        $success = $tokens['--success'];
+        $accent = $tokens['--accent'];
+
+        $pairRatio = $this->contrastRatio($success, $accent);
+        $this->assertGreaterThanOrEqual(
+            self::SUCCESS_ACCENT_MIN_RATIO,
+            $pairRatio,
+            sprintf(
+                '--success %s vs --accent %s is %.3f:1 — success status reads as an accent '
+                . 'chip below the %.2f:1 separation floor (webux N1: the inherited #61c073 was 1.062:1)',
+                $success,
+                $accent,
+                $pairRatio,
+                self::SUCCESS_ACCENT_MIN_RATIO
+            )
+        );
+
+        $hueGap = abs($this->hue($success) - $this->hue($accent));
+        $this->assertGreaterThanOrEqual(
+            self::SUCCESS_ACCENT_MIN_HUE_DEG,
+            $hueGap,
+            sprintf(
+                '--success %s sits %.1f° from --accent %s — below the %.0f° hue separation floor; '
+                . 'equal-luminance, same-hue lights are the N1 collision by construction',
+                $success,
+                $hueGap,
+                $accent,
+                self::SUCCESS_ACCENT_MIN_HUE_DEG
+            )
+        );
+
+        foreach ($this->grounds() as $name => $ground) {
+            $ratio = $this->contrastRatio($success, $ground);
+            $this->assertGreaterThanOrEqual(
+                self::AA_TEXT_RATIO,
+                $ratio,
+                sprintf(
+                    '--success %s on %s (%s) is %.2f:1 — below the 4.5:1 AA floor for status text',
+                    $success,
+                    $name,
+                    $ground,
+                    $ratio
+                )
+            );
+        }
+
+        // Status chips: the ui paints --success text on a --success-bg tint
+        // over the page/surface stack; the composited chip is the real ground.
+        [$chipRgb, $chipAlpha] = $this->parseRgba($tokens['--success-bg']);
+        $chipHex = sprintf('#%02x%02x%02x', $chipRgb[0], $chipRgb[1], $chipRgb[2]);
+        foreach (['--bg' => $tokens['--bg'], '--surface' => $tokens['--surface']] as $name => $ground) {
+            $chip = $this->composite($chipHex, $chipAlpha, $ground);
+            $ratio = $this->contrastRatio($success, $chip);
+            $this->assertGreaterThanOrEqual(
+                self::AA_TEXT_RATIO,
+                $ratio,
+                sprintf(
+                    '--success %s on its %s-tinted chip over %s (%s) is %.2f:1 — below the '
+                    . '4.5:1 AA floor for status text',
+                    $success,
+                    $tokens['--success-bg'],
+                    $name,
+                    $chip,
+                    $ratio
+                )
+            );
+        }
+    }
+
     /**
      * Alpha-composite a hex over a hex, the way the browser would.
      */
@@ -256,6 +355,33 @@ final class TokenContrastTest extends TestCase
         }
 
         return sprintf('#%02x%02x%02x', $mixed[0], $mixed[1], $mixed[2]);
+    }
+
+    /**
+     * HSL hue in degrees of a #rrggbb hex — the perceptual partner to the
+     * WCAG luminance math, used by the N1 separation law (contrast alone
+     * cannot separate two same-hue lights of similar luminance).
+     */
+    private function hue(string $hex): float
+    {
+        [$r, $g, $b] = $this->parseHex($hex);
+        $rn = $r / 255;
+        $gn = $g / 255;
+        $bn = $b / 255;
+        $max = max($rn, $gn, $bn);
+        $min = min($rn, $gn, $bn);
+        $delta = $max - $min;
+        if ($delta == 0.0) {
+            return 0.0;
+        }
+
+        $hue = match (true) {
+            $max === $rn => 60.0 * fmod((($gn - $bn) / $delta), 6.0),
+            $max === $gn => 60.0 * ((($bn - $rn) / $delta) + 2.0),
+            default => 60.0 * ((($rn - $gn) / $delta) + 4.0),
+        };
+
+        return $hue < 0.0 ? $hue + 360.0 : $hue;
     }
 
     /**

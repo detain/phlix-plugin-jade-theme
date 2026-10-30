@@ -96,6 +96,33 @@ final class JadePlugin implements LifecycleInterface, ThemeSourceInterface
                     '--accent-ring' => 'rgba(110, 232, 154, 0.55)',
                     '--accent-text' => '#e8fff0',
 
+                    // Semantic status colors. The inherited midnight
+                    // --success (#61c073, colors.css Midnight block) collided
+                    // with jade's green identity: WCAG 1.4.3 relative
+                    // luminance Y(#61c073)=0.4148 vs Y(--accent #50c878)=
+                    // 0.4437 — a 1.062:1 pair with only 8.6° of HSL hue
+                    // separation (131.4° vs 140.0°), i.e. a success badge
+                    // read as an accent chip (webux N1, 1.06:1). The base
+                    // pattern ("let midnight provide status colours") is
+                    // safe under the amber identity it was tuned for; under
+                    // a green accent the override is the theme's job.
+                    // #2fb98e keeps success green (semantics intact) but
+                    // pulls it cooler and darker: Y=0.3726 (ΔY −0.071),
+                    // hue 161.3° (Δ21.3° toward teal), pair contrast with
+                    // --accent 1.168:1. All grounds it paints keep AA ≥4.5:
+                    //   on --bg 8.03, --surface 7.54, --surface-2 6.92,
+                    //   --surface-3 6.05; success text over its own
+                    //   --success-bg chip (0.16 alpha): 6.45 on --bg,
+                    //   5.88 on --surface. Pinned by
+                    //   TokenContrastTest::testSuccessStaysDistinguishable-
+                    //   FromTheAccentAndMeetsAaOnItsGrounds; math is the
+                    //   same WCAG sRGB linearization the test recomputes.
+                    '--success' => '#2fb98e',
+                    // Chip tint for the same role, re-hued to match — the
+                    // base rgba(97, 192, 115, 0.16) would sit warm while
+                    // the text over it reads cool.
+                    '--success-bg' => 'rgba(47, 185, 142, 0.16)',
+
                     // Background + elevation stack.
                     '--bg' => '#050a07',
                     '--surface' => '#0a1410',

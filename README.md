@@ -40,6 +40,13 @@ A deep emerald UI theme for Phlix with luminous jade accent tones.
 | **Accent Text** | `#e8fff0` | Accent-colored foreground text and icons on bg/surfaces (the accent as ink) |
 | **Text on Accent** | `#050a07` | Dark ink drawn on accent fills (buttons, badges) |
 
+### Semantic Status Colors
+
+| Token | Hex/Value | Usage |
+|-------|-----------|-------|
+| **Success** | `#2fb98e` | Success status ink (badges, checkmarks, status text). Jade overrides the inherited midnight `#61c073`: against a green accent the base value sat 1.062:1 away from `--accent` — a success badge indistinguishable from an accent chip (webux N1). `#2fb98e` holds AA ≥4.5:1 on every jade ground (6.05–8.03) while separating 1.168:1 / 21.3° hue from the accent; pinned by `TokenContrastTest` |
+| **Success Background** | `rgba(47, 185, 142, 0.16)` | Status-chip tint behind `--success` text, re-hued to match the override (base rgba sat warm against the cool text) |
+
 ## Installation
 
 A theme plugin only registers **while enabled** — a fresh install lands
