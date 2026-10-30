@@ -6,13 +6,15 @@ A deep emerald UI theme for Phlix with luminous jade accent tones.
 
 ### Color Palette
 
-| Token | Hex | Usage |
-|-------|-----|-------|
+| Token | Hex/Value | Usage |
+|-------|-----------|-------|
 | **Accent** | `#50c878` | Primary jade green accent |
 | **Background** | `#050a07` | Deepest background layer |
 | **Surface** | `#0a1410` | Card and panel backgrounds |
 | **Surface 2** | `#101e18` | Elevated surface elements |
 | **Surface 3** | `#192a24` | Highest elevation surfaces |
+| **Surface Glass** | `rgba(10, 20, 16, 0.65)` | Translucent frosted backdrop for overlaying panels (consumed via `var(--surface-glass)` by the web UI) |
+| **Surface Glass Strong** | `rgba(5, 10, 7, 0.82)` | Opaque-tier glass: mini-player dock, auth card, player overlay panels |
 | **Text** | `#e8f5ec` | Primary text color |
 | **Text Muted** | `#9ab8a8` | Secondary/muted text |
 | **Text Subtle** | `#708a7c` | Tertiary/subtle text (AA ≥4.5:1 on bg/surface/elevated) |
@@ -120,7 +122,7 @@ and checked under PSR-12 (two sniffs are scoped off for `scripts/` only —
 the reasons are pinned in `phpcs.xml`; the script itself is byte-frozen
 family template).
 
-`tests/bootstrap.php` loads `dev-stubs/LifecycleInterface.php` and `dev-stubs/ThemeSourceInterface.php` only when the real host contracts are absent, so the suite runs outside a Phlix server checkout. `.github/workflows/test.yml` runs the same three checks on PHP 8.3 and 8.4.
+`tests/bootstrap.php` loads `dev-stubs/LifecycleInterface.php` and `dev-stubs/ThemeSourceInterface.php` only when the real host contracts are absent, so the suite runs outside a Phlix server checkout. `.github/workflows/test.yml` runs the same three checks on PHP 8.3 and 8.4, plus the S440 dependency-audit leg (`composer-audit` job — `php scripts/security-audit-check.php`, locked down by `tests/SecurityAuditCheckTest.php`).
 
 ## License
 

@@ -3,7 +3,7 @@
 /**
  * Phlix Jade theme plugin: an emerald ui-theme provider.
  *
- * @copyright 2026 Phlix contributors
+ * @copyright 2026 Joe Huss <detain@interserver.net>
  * @license   MIT
  */
 

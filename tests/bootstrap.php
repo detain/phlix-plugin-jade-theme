@@ -3,7 +3,7 @@
 /**
  * Test bootstrap for the plugin PHPUnit suite.
  *
- * @copyright 2026 Phlix contributors
+ * @copyright 2026 Joe Huss <detain@interserver.net>
  * @license   MIT
  */
 
@@ -19,7 +19,7 @@ declare(strict_types=1);
  *  - `Phlix\Theming\ThemeSourceInterface` — declared by the SERVER, in no
  *    Composer package at all. Nothing but a running Phlix server can supply it.
  *
- * In an installed plugin (`var/plugins/phlix-plugin-jade/`) both are on
+ * In an installed plugin (`var/plugins/phlix-plugin-jade-theme/`) both are on
  * the host's classpath. Tested in isolation from this repo, the second one
  * never is — hence the stubs, each registered only when the real contract is
  * absent, so a run inside a server checkout still exercises the real thing.
