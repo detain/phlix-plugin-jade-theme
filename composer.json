@@ -1,6 +1,6 @@
 {
     "name": "detain/phlix-plugin-jade-theme",
-    "description": "Jade theme plugin for Phlix - a deep emerald palette with luminous jade accent tones",
+    "description": "A deep emerald UI theme for Phlix with luminous jade accent tones",
     "type": "phlix-plugin",
     "homepage": "https://github.com/detain/phlix-plugin-jade-theme",
     "license": "MIT",

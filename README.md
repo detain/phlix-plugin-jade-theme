@@ -17,7 +17,7 @@ A deep emerald UI theme for Phlix with luminous jade accent tones.
 | **Surface Glass Strong** | `rgba(5, 10, 7, 0.82)` | Opaque-tier glass: mini-player dock, auth card, player overlay panels |
 | **Text** | `#e8f5ec` | Primary text color |
 | **Text Muted** | `#9ab8a8` | Secondary/muted text |
-| **Text Subtle** | `#708a7c` | Tertiary/subtle text (AA ≥4.5:1 on bg/surface/elevated) |
+| **Text Subtle** | `#708a7c` | Tertiary/subtle text (AA ≥4.5:1 on bg/surface/surface-2 and the 80% input composite — the graded set pinned by `TokenContrastTest`; `--surface-3` carries no subtle text) |
 | **Text Faint** | `#6a8473` | Faintest text tier; auth-form placeholder (AA ≥4.5:1 on its grounds) |
 | **Border** | `#1e2e28` | Default border color |
 | **Border Subtle** | `#141e1a` | Subtle divider lines |
@@ -49,12 +49,34 @@ A deep emerald UI theme for Phlix with luminous jade accent tones.
 | **Success** | `#2fb98e` | Success status ink (badges, checkmarks, status text). Jade overrides the inherited midnight `#61c073`: against a green accent the base value sat 1.062:1 away from `--accent` — a success badge indistinguishable from an accent chip (webux N1). `#2fb98e` holds AA ≥4.5:1 on every jade ground (6.05–8.03) while separating 1.168:1 / 21.3° hue from the accent; pinned by `TokenContrastTest` |
 | **Success Background** | `rgba(47, 185, 142, 0.16)` | Status-chip tint behind `--success` text, re-hued to match the override (base rgba sat warm against the cool text) |
 
+### Legacy Aliases
+
+The manifest also ships the five `--color-*` names from `phlix-tokens`
+`src/css/colors.css` that the shipped SPA still reads, each mirroring its
+modern token byte-exactly:
+
+| Token | Mirrors | Value |
+|-------|---------|-------|
+| `--color-bg` | `--bg` | `#050a07` |
+| `--color-surface` | `--surface` | `#0a1410` |
+| `--color-text` | `--text` | `#e8f5ec` |
+| `--color-text-muted` | `--text-muted` | `#9ab8a8` |
+| `--color-border` | `--border` | `#1e2e28` |
+
+`colors.css` declares each alias as `var(--modern-token)` inside every
+theme block, so these would follow the overrides above through the
+cascade alone; they are set explicitly anyway — that is one fewer cascade
+assumption between a plugin author and a correct render. The remaining
+`--color-*` names are not set in this manifest and stay inherited through
+`extends: midnight`.
+
 ## Installation
 
 A theme plugin only registers **while enabled** — a fresh install lands
 *disabled*, so plan on both steps. There are two supported routes:
 
-**Admin UI** — *Admin → Plugins* (`/app/admin/plugins`), find **Jade Theme**,
+**Admin UI** — *Admin → Plugins* (`/app/admin/plugins`), find **Jade Theme**
+(the picker lists manifest package names, so look for `phlix-plugin-jade-theme`),
 press **Install**, then flip its switch to enable it.
 
 **CLI** — from the server root:
