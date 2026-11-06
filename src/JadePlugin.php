@@ -19,8 +19,12 @@ use Psr\Container\ContainerInterface;
  * Phlix **Jade** theme plugin.
  *
  * A deep emerald palette with luminous jade accent tones. The theme extends
- * the built-in `midnight` base and layers a complete token override to
- * achieve its distinctive jewel-green appearance.
+ * the built-in `midnight` base and layers a broad token override — 30 keys
+ * across the accent ramp, status colours, surfaces, text tiers, borders,
+ * atmosphere, and the legacy `--color-*` aliases — to achieve its distinctive
+ * jewel-green appearance; among status colours only `--success` and
+ * `--success-bg` are re-inked, while the error/warning/info roles stay
+ * inherited from midnight.
  *
  * @package Phlix\Jade
  * @since 1.0.0
@@ -97,26 +101,27 @@ final class JadePlugin implements LifecycleInterface, ThemeSourceInterface
                     '--accent-text' => '#e8fff0',
 
                     // Semantic status colors. The inherited midnight
-                    // --success (#61c073, colors.css Midnight block) collided
-                    // with jade's green identity: WCAG 1.4.3 relative
-                    // luminance Y(#61c073)=0.4148 vs Y(--accent #50c878)=
-                    // 0.4437 — a 1.062:1 pair with only 8.6° of HSL hue
-                    // separation (131.4° vs 140.0°), i.e. a success badge
-                    // read as an accent chip (webux N1, 1.06:1). The base
-                    // pattern ("let midnight provide status colours") is
-                    // safe under the amber identity it was tuned for; under
-                    // a green accent the override is the theme's job.
-                    // #2fb98e keeps success green (semantics intact) but
-                    // pulls it cooler and darker: Y=0.3726 (ΔY −0.071),
-                    // hue 161.3° (Δ21.3° toward teal), pair contrast with
-                    // --accent 1.168:1. All grounds it paints keep AA ≥4.5:
+                    // --success (#61c073, phlix-tokens src/css/colors.css,
+                    // Midnight block) collided with jade's green identity:
+                    // WCAG 1.4.3 relative luminance Y(#61c073)=0.4148 vs
+                    // Y(--accent #50c878)=0.4437 — a 1.062:1 pair with only
+                    // 8.6° of HSL hue separation (131.4° vs 140.0°), i.e. a
+                    // success badge read as an accent chip (accessibility
+                    // review N1, 1.062:1). The base pattern ("let midnight
+                    // provide status colours") is safe under the amber
+                    // identity it was tuned for; under a green accent the
+                    // override is the theme's job. #2fb98e keeps success
+                    // green (semantics intact) but pulls it cooler and
+                    // darker: Y=0.3726 (ΔY −0.071), hue 161.3° (Δ21.3°
+                    // toward teal), pair contrast with --accent 1.168:1.
+                    // It reaches AA >= 4.5:1 on every ground it paints:
                     //   on --bg 8.03, --surface 7.54, --surface-2 6.92,
                     //   --surface-3 6.05; success text over its own
                     //   --success-bg chip (0.16 alpha): 6.45 on --bg,
                     //   5.88 on --surface. Pinned by
-                    //   TokenContrastTest::testSuccessStaysDistinguishable-
-                    //   FromTheAccentAndMeetsAaOnItsGrounds; math is the
-                    //   same WCAG sRGB linearization the test recomputes.
+                    // TokenContrastTest::testSuccessStaysDistinguishableFromTheAccentAndMeetsAaOnItsGrounds
+                    // — the math is the same WCAG sRGB linearization the
+                    // test recomputes.
                     '--success' => '#2fb98e',
                     // Chip tint for the same role, re-hued to match — the
                     // base rgba(97, 192, 115, 0.16) would sit warm while

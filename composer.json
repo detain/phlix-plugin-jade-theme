@@ -31,8 +31,8 @@
         }
     ],
     "_comment": [
-        "Why the repositories block exists (W-min133 item 07, family-drift",
-        "question): detain/phlix-shared is developed alongside these plugins,",
+        "Why the repositories block exists (family-drift question):",
+        "detain/phlix-shared is developed alongside these plugins,",
         "and the vcs entry lets `composer update` resolve shared tags straight",
         "from GitHub instead of depending on a Packagist mirror's freshness.",
         "`composer install` is lock-driven either way, so CI is unaffected.",

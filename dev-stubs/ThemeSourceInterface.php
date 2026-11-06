@@ -4,9 +4,8 @@
  * Stub for ThemeSourceInterface - provides IDE autocompletion when the
  * theming package is not installed in the development environment.
  *
- * This file is indexed by phpstan through `scanDirectories` in
- * phpstan.neon (deliberately included, never excluded via scanFiles)
- * so the host contract resolves during CI; it also supports
+ * This file is deliberately indexed via `scanDirectories` in
+ * phpstan.neon so the host contract resolves during CI; it also supports
  * development workflows that don't have the full Phlix monorepo
  * installed.
  *

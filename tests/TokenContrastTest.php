@@ -31,7 +31,7 @@ use RuntimeException;
  *    fallback), so the COMPOSITED result over each ground is the visible
  *    boundary and must reach WCAG 1.4.11 (>= 3:1) against that ground.
  *  - `--success` is the semantic status ink the theme overrides from the
- *    inherited midnight #61c073 (webux N1: 1.06:1 against jade's green
+ *    inherited midnight #61c073 (accessibility review N1: 1.062:1 against jade's green
  *    `--accent` — success badges read as accent chips). The override must
  *    stay distinguishable from `--accent` (pair contrast and hue floors
  *    below) AND reach AA (>= 4.5:1) on every ground it paints, including
@@ -57,7 +57,7 @@ final class TokenContrastTest extends TestCase
     /**
      * Minimum WCAG contrast between `--success` and `--accent`.
      *
-     * The webux N1 collision measured 1.062:1 for the inherited midnight
+     * The accessibility review N1 collision measured 1.062:1 for the inherited midnight
      * #61c073 pair (#61c073 vs #50c878); the cure #2fb98e measures 1.168:1.
      * A 1.15:1 floor rejects any value that collapses back onto the accent
      * ramp while staying below the cured value, so the law has teeth.
@@ -150,7 +150,7 @@ final class TokenContrastTest extends TestCase
     {
         $tokens = $this->tokens();
         $ink = $tokens['--text-subtle'];
-        // The grounds webux M1 measured: the auth card sits on --bg and
+        // The accessibility-review M1 grounds: the auth card sits on --bg and
         // --surface, elevated panels on --surface-2, and the input composite
         // below. --surface-3 (topmost elevation) carries no --text-subtle
         // text in the shipped SPA flows the review traced — the law pins the
@@ -230,7 +230,7 @@ final class TokenContrastTest extends TestCase
     {
         $tokens = $this->tokens();
         $ink = $tokens['--text-faint'];
-        // webux M3 measured faint at 2.12/1.99/2.02 on exactly these grounds:
+        // accessibility-review M3 measured faint at 2.12/1.99/2.02 on exactly these grounds:
         // the auth page bg, the card surface, and the translucent login input
         // where AuthField binds it as ::placeholder. The topmost elevations
         // carry no faint text in the shipped flows, and the disabled-control
@@ -282,7 +282,8 @@ final class TokenContrastTest extends TestCase
             $pairRatio,
             sprintf(
                 '--success %s vs --accent %s is %.3f:1 — success status reads as an accent '
-                . 'chip below the %.2f:1 separation floor (webux N1: the inherited #61c073 was 1.062:1)',
+                . 'chip below the %.2f:1 separation floor (accessibility review N1: '
+                . 'the inherited #61c073 was 1.062:1)',
                 $success,
                 $accent,
                 $pairRatio,

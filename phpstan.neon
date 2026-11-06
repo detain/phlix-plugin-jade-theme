@@ -7,16 +7,16 @@ parameters:
     paths:
         - src
         # The S440 gate script ships fully typed; level-9-clean was measured
-        # (W-min133 item 03) with zero ignores, so the auditor can no longer
-        # rot unchecked. bright-line: the script itself stays byte-frozen.
+        # with zero ignores, so the auditor can no longer rot unchecked.
+        # bright-line: the script itself stays byte-frozen.
         - scripts
     excludePaths:
         - vendor
         - tests
-    # W-min133 item 04: the two blanket patterns that used to sit here
-    # ('undefined method ::subscribeEvent()' and 'should return ... but
-    # returns mixed') were measured at-red-removed across the full corpus
-    # and are dead weight — deleting them keeps level 9 honest. The default
-    # (report unmatched) is stated explicitly: any future ignore must pay
-    # for itself or it reddens the build instead of silently widening.
+    # The two blanket patterns that used to sit here ('undefined method
+    # ::subscribeEvent()' and 'should return ... but returns mixed') were
+    # measured at-red-removed across the full corpus and are dead weight —
+    # deleting them keeps level 9 honest. The default (report unmatched) is
+    # stated explicitly: any future ignore must pay for itself or it reddens
+    # the build instead of silently widening.
     reportUnmatchedIgnoredErrors: true

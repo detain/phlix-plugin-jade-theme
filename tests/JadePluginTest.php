@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 final class JadePluginTest extends TestCase
 {
     /**
-     * Value-shape law (review theme-jade__srphp m10): every shipped token
+     * Value-shape law: every shipped token
      * value must be exactly one of —
      *  - a hex color: 3, 4, 6 or 8 digits after '#';
      *  - a functional rgb() color: three integer 0-255 components;

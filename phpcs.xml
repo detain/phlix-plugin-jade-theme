@@ -15,7 +15,7 @@
         side-effects rule is structurally unsatisfiable there, so it is
         scoped off for scripts/ only; every other PSR-12 law still applies.
         The file itself is bright-line frozen (family template), so the
-        exception is the only cure. (W-min133 item 03, measured: 0 errors,
+        exception is the only cure. (Measured: 0 errors,
         2 warnings — this rule + LineLength below.)
     -->
     <rule ref="PSR1.Files.SideEffects">
