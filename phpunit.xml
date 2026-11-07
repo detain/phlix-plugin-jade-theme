@@ -21,7 +21,7 @@
         </include>
     </source>
 
-    <!-- Coverage telemetry contract (review theme-jade__srphp MAJOR-1):
+    <!-- Coverage telemetry contract:
          .github/workflows/test.yml documents "phpunit.xml writes a cobertura
          report to ./coverage.xml" and uploads that file to Codacy. The S440
          port batch dropped this block from every ported phpunit.xml while
