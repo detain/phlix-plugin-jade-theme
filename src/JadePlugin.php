@@ -20,9 +20,9 @@ use Psr\Container\ContainerInterface;
  *
  * A deep emerald palette with luminous jade accent tones. The theme extends
  * the built-in `midnight` base and layers a broad token override — 30 keys
- * across the accent ramp, status colours, surfaces, text tiers, borders,
+ * across the accent ramp, status colors, surfaces, text tiers, borders,
  * atmosphere, and the legacy `--color-*` aliases — to achieve its distinctive
- * jewel-green appearance; among status colours only `--success` and
+ * jewel-green appearance; among status colors only `--success` and
  * `--success-bg` are re-inked, while the error/warning/info roles stay
  * inherited from midnight.
  *
@@ -59,7 +59,7 @@ final class JadePlugin implements LifecycleInterface, ThemeSourceInterface
     /**
      * A theme plugin subscribes to no events.
      *
-     * @return array<class-string, string> Always empty.
+     * @return array<class-string, string|callable> Always empty.
      */
     public function subscribedEvents(): array
     {
@@ -108,12 +108,15 @@ final class JadePlugin implements LifecycleInterface, ThemeSourceInterface
                     // 8.6° of HSL hue separation (131.4° vs 140.0°), i.e. a
                     // success badge read as an accent chip (accessibility
                     // review N1, 1.062:1). The base pattern ("let midnight
-                    // provide status colours") is safe under the amber
+                    // provide status colors") is safe under the amber
                     // identity it was tuned for; under a green accent the
                     // override is the theme's job. #2fb98e keeps success
                     // green (semantics intact) but pulls it cooler and
-                    // darker: Y=0.3726 (ΔY −0.071), hue 161.3° (Δ21.3°
-                    // toward teal), pair contrast with --accent 1.168:1.
+                    // darker, measured against --accent (the pair that
+                    // collided): Y=0.3726 (ΔY −0.071 vs --accent), hue
+                    // 161.3° (Δ21.3° from --accent's 140.0°, toward teal),
+                    // pair contrast with --accent 1.168:1. (Against the
+                    // inherited #61c073 it sits ΔY −0.042 and Δ29.9° hue.)
                     // It reaches AA >= 4.5:1 on every ground it paints:
                     //   on --bg 8.03, --surface 7.54, --surface-2 6.92,
                     //   --surface-3 6.05; success text over its own
@@ -153,13 +156,20 @@ final class JadePlugin implements LifecycleInterface, ThemeSourceInterface
                     '--vignette' => 'rgba(0, 0, 0, 0.55)',
                     '--ambient' => 'rgba(80, 200, 120, 0.12)',
 
-                    // Legacy `--color-*` aliases — only the ones the shipped SPA
-                    // still reads. colors.css declares each of these as
-                    // `var(--modern-token)` inside every theme block, so they
-                    // would in principle follow the overrides above through the
-                    // cascade; they are set explicitly anyway because that is
-                    // one fewer cascade assumption between a plugin author and a
-                    // correct render.
+                    // Legacy `--color-*` aliases — five of the names the shipped
+                    // SPA reads, NOT the full set it reads: it also reads other
+                    // aliases phlix-tokens colors.css declares (e.g.
+                    // --color-text-secondary, --color-primary, the status
+                    // aliases), which this manifest leaves inherited through
+                    // `extends: midnight`, plus a few names (e.g. --color-muted,
+                    // --color-fg, --color-accent) that no theme block declares
+                    // at all — a phlix-ui/phlix-tokens gap, not one a theme
+                    // manifest can close. colors.css declares each of the five
+                    // below as `var(--modern-token)` inside every theme block,
+                    // so they would in principle follow the overrides above
+                    // through the cascade; they are set explicitly anyway
+                    // because that is one fewer cascade assumption between a
+                    // plugin author and a correct render.
                     '--color-bg' => '#050a07',
                     '--color-surface' => '#0a1410',
                     '--color-text' => '#e8f5ec',

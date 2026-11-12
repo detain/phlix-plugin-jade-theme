@@ -51,9 +51,10 @@ A deep emerald UI theme for Phlix with luminous jade accent tones.
 
 ### Legacy Aliases
 
-The manifest also ships the five `--color-*` names from `phlix-tokens`
-`src/css/colors.css` that the shipped SPA still reads, each mirroring its
-modern token byte-exactly:
+The manifest also ships five of the legacy `--color-*` names from
+`phlix-tokens` `src/css/colors.css`, each mirroring its modern token
+byte-exactly. They are five of the aliases the shipped SPA reads, not the
+whole set it reads:
 
 | Token | Mirrors | Value |
 |-------|---------|-------|
@@ -66,17 +67,24 @@ modern token byte-exactly:
 `colors.css` declares each alias as `var(--modern-token)` inside every
 theme block, so these would follow the overrides above through the
 cascade alone; they are set explicitly anyway — that is one fewer cascade
-assumption between a plugin author and a correct render. The remaining
-`--color-*` names are not set in this manifest and stay inherited through
-`extends: midnight`.
+assumption between a plugin author and a correct render.
+
+The other `--color-*` aliases that `colors.css` declares (for example
+`--color-text-secondary`, `--color-primary`, and the status aliases) are not
+set in this manifest. They stay inherited through `extends: midnight`. The SPA
+also reads a few `--color-*` names (for example `--color-muted`, `--color-fg`
+and `--color-accent`) that neither `colors.css` nor any theme declares. Those
+are a gap in `phlix-ui`/`phlix-tokens`, and no theme manifest, this one
+included, can close it.
 
 ## Installation
 
 A theme plugin only registers **while enabled** — a fresh install lands
 *disabled*, so plan on both steps. There are two supported routes:
 
-**Admin UI** — *Admin → Plugins* (`/app/admin/plugins`), find **Jade Theme**
-(the picker lists manifest package names, so look for `phlix-plugin-jade-theme`),
+**Admin UI** — *Admin → Plugins* (`/app/admin/plugins`), find the **Jade Theme**
+card in the catalog (the card shows the catalog `title`; the manifest name
+`phlix-plugin-jade-theme` is what the CLI and the enable/disable toasts use),
 press **Install**, then flip its switch to enable it.
 
 **CLI** — from the server root:
@@ -141,8 +149,11 @@ composer phpcs
 Both static gates cover `scripts/security-audit-check.php` as well as the
 PHP source: the S440 gate script is analyzed at level 9 with zero ignores
 and checked under PSR-12 (two sniffs are scoped off for `scripts/` only —
-the reasons are pinned in `phpcs.xml`; the script itself is byte-frozen
-family template).
+the reasons are pinned in `phpcs.xml`). The script is a per-repo port of the
+S440 reference gate in `phlix-plugin-sample-theme`. Its executable code is
+byte-identical to that reference, and only its header docblocks carry
+jade-specific prose. It is not edited here, so the scoped sniff exclusions
+are the fix instead of a rewrite.
 
 `tests/bootstrap.php` loads `dev-stubs/LifecycleInterface.php` and `dev-stubs/ThemeSourceInterface.php` only when the real host contracts are absent, so the suite runs outside a Phlix server checkout. `.github/workflows/test.yml` runs the same three checks on PHP 8.3 and 8.4, plus the S440 dependency-audit leg (`composer-audit` job — `php scripts/security-audit-check.php`, locked down by `tests/SecurityAuditCheckTest.php`).
 

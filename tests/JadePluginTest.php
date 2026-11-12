@@ -12,19 +12,28 @@ use PHPUnit\Framework\TestCase;
 final class JadePluginTest extends TestCase
 {
     /**
+     * One rgb()/rgba() color channel: an integer 0-255 (no leading zeros),
+     * with optional surrounding whitespace.
+     */
+    private const CHANNEL = '\s*(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\s*';
+
+    /**
      * Value-shape law: every shipped token
      * value must be exactly one of —
      *  - a hex color: 3, 4, 6 or 8 digits after '#';
      *  - a functional rgb() color: three integer 0-255 components;
-     *  - a functional rgba() color: three integer components plus an alpha
-     *    of 0, 1, or a decimal below 1 ("0.x" or ".x");
+     *  - a functional rgba() color: three integer 0-255 components plus an
+     *    alpha of 0, 1, or a decimal below 1 ("0.x" or ".x");
      *  - a bare unitless number (the grain knob, e.g. "0.035").
-     * A typo'd '#50c87' (5 hex digits) or an 'rgb(80, 200' with missing
-     * arity must redden this test, not sail green.
+     * A typo'd '#50c87' (5 hex digits), an 'rgb(80, 200' with missing
+     * arity, or an out-of-range 'rgb(256, 0, 0)' must redden this test, not
+     * sail green. The 0-255 bound is enforced by self::CHANNEL, not merely
+     * claimed here.
      */
     private const TOKEN_VALUE_SHAPE = '/^(?:#[0-9a-f]{3}|#[0-9a-f]{4}|#[0-9a-f]{6}|#[0-9a-f]{8}'
-        . '|rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)'
-        . '|rgba\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*(?:0?\.\d+|0|1)\s*\)'
+        . '|rgb\(' . self::CHANNEL . ',' . self::CHANNEL . ',' . self::CHANNEL . '\)'
+        . '|rgba\(' . self::CHANNEL . ',' . self::CHANNEL . ',' . self::CHANNEL
+        . ',\s*(?:0?\.\d+|0|1)\s*\)'
         . '|\d*\.?\d+)$/i';
 
     private JadePlugin $plugin;
@@ -91,6 +100,40 @@ final class JadePluginTest extends TestCase
                 self::TOKEN_VALUE_SHAPE,
                 $tokenValue,
                 "Token '$tokenName' value '$tokenValue' is not a valid CSS value shape"
+            );
+        }
+    }
+
+    /**
+     * The shape law itself must hold at its edges — a guard that accepts
+     * everything proves nothing about the shipped tokens.
+     */
+    public function testTokenValueShapeAcceptsTheLawAndRejectsItsNearMisses(): void
+    {
+        $accepted = [
+            '#50c878', '#fff', '#ffff', '#50c878ff', '0.035', '.5',
+            'rgb(0, 0, 0)', 'rgb(255, 255, 255)', 'rgb(199, 249, 250)',
+            'rgba(80, 200, 120, 0.15)', 'rgba(255,255,255,1)', 'rgba(0, 0, 0, .5)', 'rgba(9, 99, 199, 0)',
+        ];
+        $rejected = [
+            '#50c87', '#50c8781', 'rgb(80, 200', 'rgb(256, 0, 0)', 'rgb(0, 300, 0)', 'rgb(0, 0, 999)',
+            'rgba(80, 200, 120)', 'rgba(260, 200, 120, 0.15)', 'rgba(80, 200, 120, 1.5)',
+            'rgb(-1, 0, 0)', 'rgb(1000, 0, 0)', 'red',
+        ];
+
+        foreach ($accepted as $value) {
+            $this->assertMatchesRegularExpression(
+                self::TOKEN_VALUE_SHAPE,
+                $value,
+                "'{$value}' must pass the shape law"
+            );
+        }
+
+        foreach ($rejected as $value) {
+            $this->assertDoesNotMatchRegularExpression(
+                self::TOKEN_VALUE_SHAPE,
+                $value,
+                "'{$value}' must fail the shape law"
             );
         }
     }

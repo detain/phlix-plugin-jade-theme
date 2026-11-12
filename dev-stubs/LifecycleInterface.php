@@ -39,9 +39,13 @@ interface LifecycleInterface
     public function onDisable(): void;
 
     /**
-     * Returns a map of event class names to handler method names.
+     * Returns the PSR-14 listener subscriptions, keyed by event FQCN.
      *
-     * @return array<class-string, string> Map of event class to method name.
+     * Mirrors the real contract in detain/phlix-shared
+     * (src/Plugin/LifecycleInterface.php): each value is either a method
+     * name on the plugin instance or a PHP callable.
+     *
+     * @return array<class-string, string|callable> Subscriptions keyed by event FQCN.
      */
     public function subscribedEvents(): array;
 }

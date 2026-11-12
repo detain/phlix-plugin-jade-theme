@@ -14,9 +14,11 @@
         contract (the guard suite scans the body byte-region). PSR-1's
         side-effects rule is structurally unsatisfiable there, so it is
         scoped off for scripts/ only; every other PSR-12 law still applies.
-        The file itself is bright-line frozen (family template), so the
-        exception is the only cure. (Measured: 0 errors,
-        2 warnings — this rule + LineLength below.)
+        The file is a per-repo port of the S440 reference gate
+        (phlix-plugin-sample-theme): its executable code is byte-identical
+        to that reference and only its header docblocks carry repo-specific
+        prose. It is not edited here, so the scoped exception is the cure.
+        (Measured: 0 errors, 2 warnings — this rule + LineLength below.)
     -->
     <rule ref="PSR1.Files.SideEffects">
         <exclude-pattern>scripts/</exclude-pattern>

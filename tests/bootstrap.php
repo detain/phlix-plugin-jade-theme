@@ -1,16 +1,7 @@
 <?php
 
 /**
- * Test bootstrap for the plugin PHPUnit suite.
- *
- * @copyright 2026 Joe Huss <detain@interserver.net>
- * @license   MIT
- */
-
-declare(strict_types=1);
-
-/**
- * Test bootstrap for the plugin's own PHPUnit suite.
+ * Test bootstrap for the plugin's own PHPUnit suite (`phpunit.xml`).
  *
  * A theme plugin's runtime depends on TWO host contracts:
  *
@@ -23,7 +14,14 @@ declare(strict_types=1);
  * the host's classpath. Tested in isolation from this repo, the second one
  * never is — hence the stubs, each registered only when the real contract is
  * absent, so a run inside a server checkout still exercises the real thing.
+ * The directory name is the manifest name (`plugin.json` `name`), per the
+ * server installer (`phlix-server/src/Plugins/Installer/HttpInstaller.php`).
+ *
+ * @copyright 2026 Joe Huss <detain@interserver.net>
+ * @license   MIT
  */
+
+declare(strict_types=1);
 
 require __DIR__ . '/../vendor/autoload.php';
 
