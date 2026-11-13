@@ -155,7 +155,7 @@ byte-identical to that reference, and only its header docblocks carry
 jade-specific prose. It is not edited here, so the scoped sniff exclusions
 are the fix instead of a rewrite.
 
-`tests/bootstrap.php` loads `dev-stubs/LifecycleInterface.php` and `dev-stubs/ThemeSourceInterface.php` only when the real host contracts are absent, so the suite runs outside a Phlix server checkout. `.github/workflows/test.yml` runs the same three checks on PHP 8.3 and 8.4, plus the S440 dependency-audit leg (`composer-audit` job — `php scripts/security-audit-check.php`, locked down by `tests/SecurityAuditCheckTest.php`).
+`tests/bootstrap.php` loads `dev-stubs/LifecycleInterface.php` and `dev-stubs/ThemeSourceInterface.php` only when the real host contracts are absent, so the suite runs outside a Phlix server checkout. `.github/workflows/test.yml` runs the same three checks on PHP 8.3, 8.4 and 8.5, plus the S440 dependency-audit leg (`composer-audit` job — `php scripts/security-audit-check.php`, locked down by `tests/SecurityAuditCheckTest.php`).
 
 ## License
 

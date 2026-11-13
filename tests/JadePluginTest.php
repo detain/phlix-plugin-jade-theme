@@ -140,7 +140,7 @@ final class JadePluginTest extends TestCase
 
     public function testOnEnableDoesNotThrow(): void
     {
-        $container = $this->createMock(\Psr\Container\ContainerInterface::class);
+        $container = $this->createStub(\Psr\Container\ContainerInterface::class);
 
         $this->plugin->onEnable($container);
         $this->assertTrue(true); // Assertion confirms no exception thrown
