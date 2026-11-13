@@ -32,3 +32,6 @@ Thumbs.db
 # Git (rarely needed in plugin, but standard)
 # .git/
 # .gitignore is tracked
+
+# Per-checkout agent state (untracked; owner-approved cohort ruling)
+.caliber/
